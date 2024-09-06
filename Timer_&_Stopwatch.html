@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer and Stopwatch</title>
+    <style>
+        body{
+            font-family: Arial,sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container{
+            text-align: center;
+        }
+        #timer,#stopwatch{
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Timer</h1>
+        <div id="timer" >00:00:00</div>
+        <input type="number" id="minutes" placeholder="Enter Minutes">
+        <button onclick="startTimer()">startTimer</button>
+
+        <h1>Stopwatch</h1>
+        <div id="stopwatch">00:00:00</div>
+        <button onclick="startStopwatch()">Start</button>
+        <button onclick="stopStopwatch()">Stop</button>
+        <button onclick="resetStopwatch()">Reset</button>
+    </div>
+    <script>
+        let timeInterval;
+let stopwatchInterval;
+let elapsedTime = 0;
+let startTime;
+
+function startTimer() {
+    const minutesInput = document.getElementById('minutes').value;
+    if (isNaN(minutesInput) || minutesInput <= 0) {
+        alert("Please enter a positive number of minutes.");
+        return;
+    }
+    let time = minutesInput * 60;
+
+    clearInterval(timeInterval);
+    timeInterval = setInterval(() => {
+        if (time <= 0) {
+            clearInterval(timeInterval);
+        } else {
+            time--;
+            document.getElementById('timer').textContent = formatTime(time);
+        }
+    }, 1000);
+}
+
+function startStopwatch() {
+    if (stopwatchInterval) return;
+    elapsedTime = 0;
+    startTime = Date.now() - elapsedTime;
+    stopwatchInterval = setInterval(() => {
+        elapsedTime = Date.now() - startTime;
+        document.getElementById('stopwatch').textContent = formatElapsedTime(elapsedTime);
+    }, 1000);
+}
+
+function stopStopwatch() {
+    clearInterval(stopwatchInterval);
+    stopwatchInterval = null;
+}
+
+function resetStopwatch() {
+    clearInterval(stopwatchInterval);
+    stopwatchInterval = null;
+    elapsedTime = 0;
+    document.getElementById('stopwatch').textContent = "00:00:00";
+}
+
+function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+}
+
+function formatElapsedTime(milliseconds) {
+    const totalSeconds = Math.floor(milliseconds / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+}
+    </script>
+</body>
+</html>

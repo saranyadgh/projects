@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Order Website</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 10px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+main {
+    padding: 20px;
+}
+
+.menu, .cart {
+    margin-bottom: 20px;
+}
+
+.menu-item, .cart-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+button {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #555;
+}
+
+</style>
+<body>
+    <header>
+        <h1>Saranya Foods</h1>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Menu</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="menu">
+            <h2>Our Menu</h2>
+            <div class="menu-item" data-name="Burger" data-price="5">
+                <h3>Burger</h3>
+                <p>Price: $5</p>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+            <div class="menu-item" data-name="Pizza" data-price="8">
+                <h3>Pizza</h3>
+                <p>Price: $8</p>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+            <div class="menu-item" data-name="Salad" data-price="4">
+                <h3>Salad</h3>
+                <p>Price: $4</p>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+            <div class="menu-item" data-name="French Fries" data-price="5">
+                <h3>French Fries</h3>
+                <p>Price: $5</p>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </section>
+        <section class="cart">
+            <h2>Your Cart</h2>
+            <ul id="cart-items"></ul>
+            <p id="total-price">Total: $0</p>
+            <button id="place-order">Place Order</button>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const cartItems = [];
+    const menuItems = document.querySelectorAll('.menu-item');
+
+    menuItems.forEach(item => {
+        item.querySelector('.add-to-cart').addEventListener('click', () => {
+            const name = item.getAttribute('data-name');
+            const price = parseFloat(item.getAttribute('data-price'));
+            addToCart(name, price);
+        });
+    });
+
+    document.getElementById('place-order').addEventListener('click', () => {
+        if (cartItems.length > 0) {
+            alert('Order placed successfully!');
+            clearCart();
+        } else {
+            alert('Your cart is empty.');
+        }
+    });
+
+    function addToCart(name, price) {
+        cartItems.push({ name, price });
+        renderCart();
+    }
+
+    function renderCart() {
+        const cartList = document.getElementById('cart-items');
+        cartList.innerHTML = '';
+        let totalPrice = 0;
+
+        cartItems.forEach((item, index) => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `${item.name} - $${item.price}`;
+            cartList.appendChild(listItem);
+            totalPrice += item.price;
+        });
+
+        document.getElementById('total-price').textContent = `Total: $${totalPrice.toFixed(2)}`;
+    }
+
+    function clearCart() {
+        cartItems.length = 0;
+        renderCart();
+    }
+});
+</script>
+</html>

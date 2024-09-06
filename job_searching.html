@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VS Jobs</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #007bff;
+    color: white;
+    padding: 15px 0;
+    text-align: center;
+}
+
+header nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+header nav ul li {
+    display: inline;
+    margin: 0 10px;
+}
+
+header nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+main {
+    padding: 20px;
+}
+
+#search-section {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+#search-bar {
+    width: 60%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+}
+
+#search-btn {
+    padding: 10px 20px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#search-btn:hover {
+    background-color: #0056b3;
+}
+
+#job-listings {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#jobs-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.job-card {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: calc(33.333% - 20px);
+    box-sizing: border-box;
+}
+    </style>
+</head>
+<body>
+    <header>
+        <h1>VS Jobs</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="jobs.html">Jobs</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="search-section">
+            <h2>Find Your Dream Job</h2>
+            <input type="text" id="search-bar" placeholder="Search for jobs...">
+            <button id="search-btn">Search</button>
+        </section>
+        <section id="job-listings">
+            <h2>Job Listings</h2>
+            <div id="jobs-container">
+                <!-- Jobs will be dynamically loaded here -->
+            </div>
+        </section>
+    </main>
+    <script>
+        document.getElementById('search-btn').addEventListener('click', searchJobs);
+
+function searchJobs() {
+    const searchQuery = document.getElementById('search-bar').value.toLowerCase();
+    const jobsContainer = document.getElementById('jobs-container');
+    jobsContainer.innerHTML = '';
+
+    const jobs = [
+        { title: 'Cloud Engineer', company: 'TechCloud', location: 'Remote', description: 'Manage cloud infrastructure and services.' },
+        { title: 'Software Engineer', company: 'DevWorks', location: 'San Francisco, CA', description: 'Develop and maintain software solutions.' },
+        { title: 'DevOps Engineer', company: 'OpsSolutions', location: 'New York, NY', description: 'Implement and manage CI/CD pipelines.' },
+        { title: 'Full Stack Developer', company: 'WebBuilders', location: 'Austin, TX', description: 'Develop front-end and back-end components.' },
+    ];
+
+    const filteredJobs = jobs.filter(job => job.title.toLowerCase().includes(searchQuery));
+
+    filteredJobs.forEach(job => {
+        const jobCard = document.createElement('div');
+        jobCard.classList.add('job-card');
+        jobCard.innerHTML = `
+            <h3>${job.title}</h3>
+            <p>${job.company}</p>
+            <p>${job.location}</p>
+            <p>${job.description}</p>
+        `;
+        jobsContainer.appendChild(jobCard);
+    });
+
+    if (filteredJobs.length === 0) {
+        jobsContainer.innerHTML = '<p>No jobs found</p>';
+    }
+}
+    </script>
+</body>
+</html>
